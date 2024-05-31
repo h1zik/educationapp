@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= thread.title %></title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .comment-card {
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/navbar', { user: user }) %>
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header">
+        <h2 style="color: black;"><%= thread.title %></h2>
+      </div>
+      <div class="card-body">
+        <p><%= thread.content %></p>
+        <p>
+          <small>Posted by <% if (thread.User) { %> <%= thread.User.username %> <% } else { %> Unknown <% } %> on <%= thread.createdAt.toLocaleDateString() %></small>
+        </p>
+      </div>
+    </div>
+    <hr>
+    <h4 class="mt-4">Comments</h4>
+    <div class="list-group mb-4">
+      <% thread.Comments.forEach(comment => { %>
+        <div class="list-group-item comment-card">
+          <p><%= comment.content %></p>
+          <small>Posted by <% if (comment.User) { %> <%= comment.User.username %> <% } else { %> Unknown <% } %> on <%= comment.createdAt.toLocaleDateString() %></small>
+        </div>
+      <% }) %>
+    </div>
+    <% if (user) { %>
+      <form action="/forums/<%= thread.id %>/comments" method="POST">
+        <div class="form-group">
+          <textarea class="form-control" name="content" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Comment</button>
+      </form>
+    <% } else { %>
+      <p>Please <a href="/login">login</a> to add a comment.</p>
+    <% } %>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

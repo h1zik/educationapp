@@ -1,0 +1,17 @@
+<%- include('../partials/navbar', { user: user }) %>
+
+<div class="container mt-4">
+  <h2>Notifications</h2>
+  <ul class="list-group">
+    <% notifications.forEach(notification => { %>
+      <li class="list-group-item <%= notification.read ? 'list-group-item-secondary' : '' %>">
+        <%= notification.message %>
+        <% if (!notification.read) { %>
+          <form action="/notifications/markAsRead/<%= notification.id %>" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-primary float-right">Mark as Read</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+</div>
